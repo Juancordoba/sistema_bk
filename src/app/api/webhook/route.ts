@@ -1,16 +1,17 @@
 import { NextResponse, NextRequest } from 'next/server';
 import axios from 'axios'
-import { Result } from 'postcss';
-
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const token = "EABjbyuES9MwBO3yeQcUHbdeTfP2RK1O5b0XggEulH1luG2tIZCDqe6EgmXodpIyf5LagPkKrhYAXAujDCaKdL9lanvH82fYVDZAbw0Y9svyFec9CFDcijzjeIMUCShD5saS48ZCwf17odm55XEgPTjGQRW1GoeZBy580ODlum9swKXY8qQrbs2JtnfIoRUQZAQMm75yiz7Tray94ZD";
 
 export async function POST(req:Request, res:Response) {
 
-  let data = await req.json();
+    console.log(req)
+  let data:any = {} // req.json();
   
   //developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
   if (data.object) {
+
     if (
       data.entry &&
       data.entry[0].changes &&
@@ -37,7 +38,7 @@ export async function POST(req:Request, res:Response) {
         headers: { "Content-Type": "application/json" },
       });
     }
-    return NextResponse.json({status:200})
+    return NextResponse.json({})
   } else {
     // Return a '404 Not Found' if event is not from a WhatsApp API
     return NextResponse.json({status:404});
@@ -49,15 +50,18 @@ export async function POST(req:Request, res:Response) {
 // info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests 
 // app.get("/webhook", (req, res) => {
 
-export async function GET(req:Request, res:NextResponse) {
+export async function GET(req:NextApiRequest, res:NextApiResponse ) {
     /**
      * UPDATE YOUR VERIFY TOKEN
      *This will be the Verify Token value when you set up webhook
     **/
     const verify_token = "MITOKEN";
   
-    let data = await req.json();
+    //let data:any = {} //await req.json();
 
+    const search = new URL(req.url as string).search;
+    const data:any = new URLSearchParams(search);
+    console.log(data)
     // Parse params from the webhook verification request
     let mode = data["hub.mode"];
     let token = data["hub.verify_token"];
