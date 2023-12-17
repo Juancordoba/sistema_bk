@@ -50,7 +50,7 @@ export async function POST(req:Request, res:Response) {
 // info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests 
 // app.get("/webhook", (req, res) => {
 
-export async function GET(req:NextApiRequest, res:NextApiResponse ) {
+export async function GET(req:NextRequest, res:NextApiResponse ) {
     /**
      * UPDATE YOUR VERIFY TOKEN
      *This will be the Verify Token value when you set up webhook
